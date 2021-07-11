@@ -1,5 +1,7 @@
 # 스캐터랩 도서관
 
+<img src="https://github.com/harrydrippin/scatterlab-library/blob/master/screenshots/slack.png?raw=true" alt="Slack으로 반납 알림이 온 화면 스크린샷" width=700px>
+
 [21/2Q Go 스터디](https://www.notion.so/mlpingpong/3-17ec6ad241b3464cac94dfa421a78741)에서 구현된 도서 대출/반납 관리 시스템입니다.
 
 ## 개발 환경 사용 방법
