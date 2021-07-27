@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"os"
@@ -11,6 +11,8 @@ type Config struct {
 	GoogleOAuthClientID     string
 	GoogleOAuthClientSecret string
 	GoogleSpreadsheetID     string
+	GoogleSpreadsheetName   string
+	GoogleCredentialJSON    string
 	SlackToken              string
 }
 
@@ -23,6 +25,8 @@ func NewConfig() *Config {
 		GoogleOAuthClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		GoogleOAuthClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 		GoogleSpreadsheetID:     os.Getenv("GOOGLE_SPREADSHEET_ID"),
+		GoogleSpreadsheetName:   os.Getenv("GOOGLE_SPREADSHEET_NAME"),
+		GoogleCredentialJSON:    os.Getenv("GOOGLE_CREDENTIAL_JSON"),
 		SlackToken:              os.Getenv("SLACK_TOKEN"),
 	}
 }
