@@ -1,8 +1,15 @@
 # go-spreadsheet-library
 
-<img src="https://github.com/harrydrippin/go-spreadsheet-library/blob/master/screenshots/slack.png?raw=true" alt="Slack으로 반납 알림이 온 화면 스크린샷" width=700px>
+<img width="675" alt="slack" src="https://user-images.githubusercontent.com/5152494/127766277-94699dc5-9f13-477b-8f96-b3c065b05f02.png">
 
-스캐터랩 사내 Go 스터디에서 구현한 사내 도서 대출/반납 관리 시스템입니다. Google Spreadsheet를 기반으로 동작하며, oAuth 2.0 인증을 획득하여 표를 수정하는 방식으로 관리합니다. Clean Architecture를 적용한 서버 및 Slackbot의 형태입니다.
+스캐터랩 사내 Go 스터디에서 구현한 사내 도서 대출/반납 관리 시스템입니다. 
+
+Google Spreadsheet를 기반으로 동작하며, oAuth 2.0 인증을 획득하여 표를 수정하는 방식으로 관리합니다. Clean Architecture를 적용한 서버 및 Slackbot의 형태입니다.
+
+## 구현한 기능
+
+* 책의 이름을 기반으로 한 검색과 대출
+* 반납 기일에 맞춘 Due Date 알람 및 반납
 
 ## 개발 환경 사용 방법
 
