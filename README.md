@@ -1,8 +1,8 @@
-# 스캐터랩 도서관
+# go-spreadsheet-library
 
-<img src="https://github.com/harrydrippin/scatterlab-library/blob/master/screenshots/slack.png?raw=true" alt="Slack으로 반납 알림이 온 화면 스크린샷" width=700px>
+<img src="https://github.com/harrydrippin/go-spreadsheet-library/blob/master/screenshots/slack.png?raw=true" alt="Slack으로 반납 알림이 온 화면 스크린샷" width=700px>
 
-[21/2Q Go 스터디](https://www.notion.so/mlpingpong/3-17ec6ad241b3464cac94dfa421a78741)에서 구현된 도서 대출/반납 관리 시스템입니다.
+스캐터랩 사내 Go 스터디에서 구현한 사내 도서 대출/반납 관리 시스템입니다. Google Spreadsheet를 기반으로 동작하며, oAuth 2.0 인증을 획득하여 표를 수정하는 방식으로 관리합니다. Clean Architecture를 적용한 서버 및 Slackbot의 형태입니다.
 
 ## 개발 환경 사용 방법
 
@@ -26,17 +26,15 @@ $ docker build -t scatterlab-library:vx.y.z .
 ### Docker Run
 
 * `.env`를 넣을 수 있을 경우 `-e` 절을 생략하고 `/.env`에 넣으면 됩니다.
+* 무엇을 넣어야 하는지는 `.env.example` 을 참조해주세요.
 
 ```bash
 $ docker run --rm -it \
-    -e GOOGLE_OAUTH_CLIENT_ID=... \
-    -e GOOGLE_OAUTH_CLIENT_SECRET=... \
-    -e GOOGLE_SPREADSHEET_ID=... \
-    -e SLACK_TOKEN=... \
+    -e ENV_VARIABLE=asdfsadf \ # 대체해야 함
     -p 8080:8080 \
     scatterlab-library:vx.y.z
 ```
 
-### Readiness / Health Check
+### Readiness / Healthcheck
 
-* Readiness / Health Check이 필요한 경우, `/`에서 Status 200이 떨어지는 것을 기준으로 해주세요.
+* Readiness Check / Healthcheck이 필요한 경우, `/`에서 Status 200이 떨어지는 것을 기준으로 해주세요.

@@ -8,15 +8,15 @@ import (
 	"strconv"
 	"strings"
 
-	models "github.com/harrydrippin/scatterlab-library/model"
-	utils "github.com/harrydrippin/scatterlab-library/utils"
+	models "github.com/harrydrippin/go-spreadsheet-library/model"
+	utils "github.com/harrydrippin/go-spreadsheet-library/utils"
 	"google.golang.org/api/option"
 	"google.golang.org/api/sheets/v4"
 )
 
 // BookRepository is a repository for a book
 type BookRepository interface {
-	GetByTitleSubstring(Title string) (models.Book, error)
+	GetByTitleSubstring(title string) ([]models.Book, error)
 	GetAll() ([]models.Book, error)
 	Update(book models.Book) error
 }
@@ -93,7 +93,6 @@ func (r *SpreadsheetRepository) GetAll() ([]models.Book, error) {
 }
 
 func (r *SpreadsheetRepository) Update(book models.Book) error {
-	// 맨 위 헤더 2줄을 가산함
 	rowId := book.ID + 2
 	readRange := fmt.Sprintf("%s!A%d:H%d", r.config.GoogleSpreadsheetName, rowId, rowId)
 	_, err := r.sheetService.Spreadsheets.Values.Get(r.config.GoogleSpreadsheetID, readRange).Do()

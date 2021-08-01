@@ -1,4 +1,4 @@
-module github.com/harrydrippin/scatterlab-library
+module github.com/harrydrippin/go-spreadsheet-library
 
 go 1.16
 
