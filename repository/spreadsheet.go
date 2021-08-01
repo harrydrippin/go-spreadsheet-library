@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	models "github.com/harrydrippin/scatterlab-library/model"
 	utils "github.com/harrydrippin/scatterlab-library/utils"
@@ -15,7 +16,7 @@ import (
 
 // BookRepository is a repository for a book
 type BookRepository interface {
-	GetByNameSubstring(name string) (models.Book, error)
+	GetByTitleSubstring(Title string) (models.Book, error)
 	GetAll() ([]models.Book, error)
 	Update(book models.Book) error
 }
@@ -41,8 +42,20 @@ func NewSpreadsheetRepository(config utils.Config) *SpreadsheetRepository {
 	}
 }
 
-func (s *SpreadsheetRepository) GetByNameSubstring(name string) ([]models.Book, error) {
-	return nil, nil
+func (s *SpreadsheetRepository) GetByTitleSubstring(title string) ([]models.Book, error) {
+	books, err := s.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	result := []models.Book{}
+	for _, book := range books {
+		if strings.Contains(book.Title, title) {
+			result = append(result, book)
+		}
+	}
+
+	return result, nil
 }
 
 func (r *SpreadsheetRepository) GetAll() ([]models.Book, error) {
@@ -80,5 +93,25 @@ func (r *SpreadsheetRepository) GetAll() ([]models.Book, error) {
 }
 
 func (r *SpreadsheetRepository) Update(book models.Book) error {
+	// 맨 위 헤더 2줄을 가산함
+	rowId := book.ID + 2
+	readRange := fmt.Sprintf("%s!A%d:H%d", r.config.GoogleSpreadsheetName, rowId, rowId)
+	_, err := r.sheetService.Spreadsheets.Values.Get(r.config.GoogleSpreadsheetID, readRange).Do()
+	if err != nil {
+		return err
+	}
+
+	valueRange := sheets.ValueRange{
+		Values: [][]interface{}{
+			{book.ID, book.Title, book.Author, book.Publisher, book.Position, book.Status, book.Borrower, book.DueDate},
+		},
+	}
+
+	call := r.sheetService.Spreadsheets.Values.Update(r.config.GoogleSpreadsheetID, readRange, &valueRange).ValueInputOption("RAW")
+	_, err = call.Do()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

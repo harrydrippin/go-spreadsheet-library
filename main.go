@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 
+	model "github.com/harrydrippin/scatterlab-library/model"
 	repositories "github.com/harrydrippin/scatterlab-library/repository"
 	utils "github.com/harrydrippin/scatterlab-library/utils"
 )
@@ -14,14 +14,16 @@ func main() {
 	// Set up the repositories
 	repository := repositories.NewSpreadsheetRepository(*utils.NewConfig())
 
-	books, err := repository.GetAll()
+	books, err := repository.GetByTitleSubstring("에픽테토스")
 	if err != nil {
 		panic(err)
 	}
 
-	// print books
-	for _, book := range books {
-		fmt.Printf("%s: %s (%s)\n", book.Title, book.Author, book.Publisher)
+	book := books[0]
+	book.Status = model.StatusBorrowed
+	err = repository.Update(book)
+	if err != nil {
+		panic(err)
 	}
 
 	e.Logger.Debug("Starting server on port 8080")

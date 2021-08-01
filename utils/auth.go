@@ -24,7 +24,7 @@ func GetGoogleClient(credentialPath string) *http.Client {
 	if err != nil {
 		log.Fatal("Error configuring Google API client", err)
 	}
-	// TODO: 이게 고정되는 것이 괜찮을지 확인하기
+
 	tokenFileName := "token.json"
 	token, err := getTokenFromFile(tokenFileName)
 	if err != nil {
