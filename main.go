@@ -11,11 +11,15 @@ import (
 
 func main() {
 	e := echo.New()
+	config := utils.NewConfig()
 
-	repository := repositories.NewSpreadsheetRepository(*utils.NewConfig())
+	repository := repositories.NewSpreadsheetRepository(*config)
 	service := services.NewLibraryService(repository)
-	handler := handlers.NewRESTfulHandler(service)
-	handler.RegisterRoutes(e)
+
+	restfulHandler := handlers.NewRESTfulHandler(service)
+	restfulHandler.RegisterRoutes(e)
+	slackHandler := handlers.NewSlackHandler(service, *config)
+	slackHandler.RegisterRoutes(e)
 
 	e.Logger.Debug("Starting server on port 8080")
 	e.Logger.Fatal(e.Start(":8080"))

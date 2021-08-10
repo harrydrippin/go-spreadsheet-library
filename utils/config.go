@@ -14,6 +14,7 @@ type Config struct {
 	GoogleSpreadsheetName   string
 	GoogleCredentialJSON    string
 	SlackToken              string
+	SlackSigningSecret      string
 }
 
 // NewConfig creates a new Config object
@@ -28,5 +29,6 @@ func NewConfig() *Config {
 		GoogleSpreadsheetName:   os.Getenv("GOOGLE_SPREADSHEET_NAME"),
 		GoogleCredentialJSON:    os.Getenv("GOOGLE_CREDENTIAL_JSON"),
 		SlackToken:              os.Getenv("SLACK_TOKEN"),
+		SlackSigningSecret:      os.Getenv("SLACK_SIGNING_SECRET"),
 	}
 }
