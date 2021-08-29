@@ -16,7 +16,8 @@ import (
 
 // BookRepository is a repository for a book
 type BookRepository interface {
-	Search(title string) ([]models.Book, error)
+	SearchByTitle(title string) ([]models.Book, error)
+	SearchById(id int) (models.Book, error)
 	GetAll() ([]models.Book, error)
 	Update(book models.Book) error
 }
@@ -42,7 +43,7 @@ func NewSpreadsheetRepository(config utils.Config) *SpreadsheetRepository {
 	}
 }
 
-func (s *SpreadsheetRepository) Search(title string) ([]models.Book, error) {
+func (s *SpreadsheetRepository) SearchByTitle(title string) ([]models.Book, error) {
 	books, err := s.GetAll()
 	if err != nil {
 		return nil, err
@@ -56,6 +57,15 @@ func (s *SpreadsheetRepository) Search(title string) ([]models.Book, error) {
 	}
 
 	return result, nil
+}
+
+func (s *SpreadsheetRepository) SearchById(id int) (models.Book, error) {
+	books, err := s.GetAll()
+	if err != nil {
+		return models.Book{}, err
+	}
+
+	return books[id], nil
 }
 
 func (r *SpreadsheetRepository) GetAll() ([]models.Book, error) {

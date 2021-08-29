@@ -11,6 +11,7 @@ import (
 // LibraryUsecase is the interface that defines the usecase for the library
 type LibraryUsecase interface {
 	Search(title string) ([]model.Book, error)
+	SearchById(id int) (model.Book, error)
 	Borrow(book model.Book, borrower string) (model.Book, error)
 	Return(book model.Book, borrower string) (model.Book, error)
 	Extend(book model.Book, borrower string) (model.Book, error)
@@ -28,7 +29,11 @@ func NewLibraryService(repository repositories.BookRepository) *LibraryService {
 }
 
 func (library *LibraryService) Search(title string) ([]model.Book, error) {
-	return library.repository.Search(title)
+	return library.repository.SearchByTitle(title)
+}
+
+func (library *LibraryService) SearchById(id int) (model.Book, error) {
+	return library.repository.SearchById(id)
 }
 
 func (library *LibraryService) Borrow(book model.Book, borrower string) (model.Book, error) {

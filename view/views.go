@@ -2,6 +2,7 @@ package view
 
 import (
 	"fmt"
+	"strconv"
 
 	models "github.com/harrydrippin/go-spreadsheet-library/model"
 	"github.com/harrydrippin/go-spreadsheet-library/utils"
@@ -42,8 +43,17 @@ func RenderSearchResult(query string, books []models.Book) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
-
+			bookInfoSection := slack.NewSectionBlock(
+				bookInfoBlock,
+				nil,
+				slack.NewAccessory(
+					slack.NewButtonBlockElement(
+						utils.BorrowThisBook,
+						strconv.Itoa(book.ID),
+						slack.NewTextBlockObject("plain_text", "대출하기", false, false),
+					),
+				),
+			)
 			sections = append(sections, bookInfoSection)
 		}
 
@@ -66,7 +76,17 @@ func RenderSearchResult(query string, books []models.Book) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
+			bookInfoSection := slack.NewSectionBlock(
+				bookInfoBlock,
+				nil,
+				slack.NewAccessory(
+					slack.NewButtonBlockElement(
+						utils.BorrowThisBook,
+						strconv.Itoa(book.ID),
+						slack.NewTextBlockObject("plain_text", "대출하기", false, false),
+					),
+				),
+			)
 
 			sections = append(sections, bookInfoSection)
 		}
@@ -170,7 +190,17 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
+			bookInfoSection := slack.NewSectionBlock(
+				bookInfoBlock,
+				nil,
+				slack.NewAccessory(
+					slack.NewButtonBlockElement(
+						utils.ExtendThisBook,
+						strconv.Itoa(book.ID),
+						slack.NewTextBlockObject("plain_text", "반납하기", false, false),
+					),
+				),
+			)
 
 			sections = append(sections, bookInfoSection)
 		}
@@ -192,8 +222,17 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
-
+			bookInfoSection := slack.NewSectionBlock(
+				bookInfoBlock,
+				nil,
+				slack.NewAccessory(
+					slack.NewButtonBlockElement(
+						utils.ExtendThisBook,
+						strconv.Itoa(book.ID),
+						slack.NewTextBlockObject("plain_text", "반납하기", false, false),
+					),
+				),
+			)
 			sections = append(sections, bookInfoSection)
 		}
 
