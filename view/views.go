@@ -204,7 +204,7 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 				slack.NewTextBlockObject("plain_text", "연장하기", false, false),
 			)
 
-			actionBlock := slack.NewActionBlock("status_action_block", returnButtonBlock, extendButtonBlock)
+			actionBlock := slack.NewActionBlock("status_action_block_"+strconv.Itoa(book.ID), returnButtonBlock, extendButtonBlock)
 
 			sections = append(sections, bookInfoSection, actionBlock)
 		}

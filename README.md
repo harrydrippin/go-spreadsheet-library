@@ -15,6 +15,10 @@ Google Spreadsheet를 기반으로 동작하며, oAuth 2.0 인증을 획득하�
 
 * Go 1.16 이상이 필요합니다.
 * 환경 변수를 설정해야 합니다. `.env.example` 파일을 참조하세요.
+* 아래 Slack Scope가 설정되어 있어야 합니다.
+    * chat:write
+    * commands
+    * incoming-webhook
 
 ```bash
 $ make (run)    # 개발용 서버 실행
@@ -27,19 +31,19 @@ $ make test     # 테스트 실행
 ### Docker Image Build
 
 ```bash
-$ docker build -t scatterlab-library:vx.y.z .
+$ docker build -t go-spreadsheet-library:vx.y.z .
 ```
 
 ### Docker Run
 
-* `.env`를 넣을 수 있을 경우 `-e` 절을 생략하고 `/.env`에 넣으면 됩니다.
+* `.env`를 넣을 수 있을 경우 `-e` 절을 생략하고 `/app/.env`에 넣으면 됩니다.
 * 무엇을 넣어야 하는지는 `.env.example` 을 참조해주세요.
 
 ```bash
 $ docker run --rm -it \
     -e ENV_VARIABLE=asdfsadf \ # 대체해야 함
     -p 8080:8080 \
-    scatterlab-library:vx.y.z
+    go-spreadsheet-library:vx.y.z
 ```
 
 ### Readiness / Healthcheck
