@@ -28,7 +28,7 @@ func NewLibraryService(repository repositories.BookRepository) *LibraryService {
 }
 
 func (library *LibraryService) Search(title string) ([]model.Book, error) {
-	return library.repository.GetByTitleSubstring(title)
+	return library.repository.Search(title)
 }
 
 func (library *LibraryService) Borrow(book model.Book, borrower string) (model.Book, error) {

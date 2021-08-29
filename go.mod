@@ -8,6 +8,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/labstack/echo/v4 v4.3.0
+	github.com/lithammer/fuzzysearch v1.1.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/slack-go/slack v0.9.4 // indirect
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect

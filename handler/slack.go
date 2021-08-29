@@ -69,10 +69,11 @@ func (h *SlackHandler) HandleCommands(c echo.Context) error {
 	command := strings.Split(slackCommand.Text, " ")
 	switch command[0] {
 	case "검색":
-		if len(command) != 2 {
+		if len(command) <= 1 {
 			return c.String(http.StatusOK, "명령이 잘못되었어요.\n사용 방법: /도서관 검색 `<검색어>`")
 		}
-		query := command[1]
+		// Join all commands
+		query := strings.Join(command[1:], " ")
 		books, err := h.service.Search(query)
 		if err != nil {
 			return c.String(http.StatusOK, "서버 오류가 발생했어요. :( 나중에 다시 시도하세요.")

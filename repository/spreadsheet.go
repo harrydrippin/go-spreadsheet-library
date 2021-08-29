@@ -6,17 +6,17 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 
 	models "github.com/harrydrippin/go-spreadsheet-library/model"
 	utils "github.com/harrydrippin/go-spreadsheet-library/utils"
+	"github.com/lithammer/fuzzysearch/fuzzy"
 	"google.golang.org/api/option"
 	"google.golang.org/api/sheets/v4"
 )
 
 // BookRepository is a repository for a book
 type BookRepository interface {
-	GetByTitleSubstring(title string) ([]models.Book, error)
+	Search(title string) ([]models.Book, error)
 	GetAll() ([]models.Book, error)
 	Update(book models.Book) error
 }
@@ -42,7 +42,7 @@ func NewSpreadsheetRepository(config utils.Config) *SpreadsheetRepository {
 	}
 }
 
-func (s *SpreadsheetRepository) GetByTitleSubstring(title string) ([]models.Book, error) {
+func (s *SpreadsheetRepository) Search(title string) ([]models.Book, error) {
 	books, err := s.GetAll()
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (s *SpreadsheetRepository) GetByTitleSubstring(title string) ([]models.Book
 
 	result := []models.Book{}
 	for _, book := range books {
-		if strings.Contains(book.Title, title) {
+		if fuzzy.Match(title, book.Title) {
 			result = append(result, book)
 		}
 	}
