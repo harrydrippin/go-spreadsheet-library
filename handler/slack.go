@@ -237,7 +237,7 @@ func (h *SlackHandler) HandleActions(c echo.Context) error {
 
 				msg := views.RenderBorrowResult(book)
 				h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionBlocks(msg.Blocks.BlockSet...))
-			case utils.ExtendThisBook:
+			case utils.ReturnThisBook:
 				book_id, err := strconv.Atoi(blockAction.Value)
 				if err != nil {
 					h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionText("서버 오류가 발생했어요. :( 나중에 다시 시도하세요.", false))
@@ -257,6 +257,27 @@ func (h *SlackHandler) HandleActions(c echo.Context) error {
 
 				msg := views.RenderReturnResult(book)
 				h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionBlocks(msg.Blocks.BlockSet...))
+			case utils.ExtendThisBook:
+				book_id, err := strconv.Atoi(blockAction.Value)
+				if err != nil {
+					h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionText("서버 오류가 발생했어요. :( 나중에 다시 시도하세요.", false))
+					break
+				}
+				book, err := h.service.SearchById(book_id - 1)
+				if err != nil {
+					h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionText("서버 오류가 발생했어요. :( 나중에 다시 시도하세요.", false))
+					break
+				}
+
+				book, err = h.service.Extend(book, payload.User.Name)
+				if err != nil {
+					_, err = h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionText(err.Error(), false))
+					break
+				}
+
+				msg := views.RenderExtendResult(book)
+				h.client.PostEphemeral(payload.Channel.ID, payload.User.ID, slack.MsgOptionBlocks(msg.Blocks.BlockSet...))
+
 			}
 		}
 	}

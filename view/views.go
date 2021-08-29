@@ -171,7 +171,7 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 	sections = append(sections, headerSection)
 
 	if len(books) == 0 {
-		additionalText := fmt.Sprintf("대출하시려면, `/도서관 대출 <책 이름의 일부>` 를 이용해보세요!")
+		additionalText := fmt.Sprintf("대출하시려면, `/도서관 검색 <책 이름의 일부>` 를 이용해보세요!")
 		additionalTextBlock := slack.NewTextBlockObject("mrkdwn", additionalText, false, false)
 		additionalSection := slack.NewSectionBlock(additionalTextBlock, nil, nil)
 
@@ -190,19 +190,23 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(
-				bookInfoBlock,
-				nil,
-				slack.NewAccessory(
-					slack.NewButtonBlockElement(
-						utils.ExtendThisBook,
-						strconv.Itoa(book.ID),
-						slack.NewTextBlockObject("plain_text", "반납하기", false, false),
-					),
-				),
+			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
+
+			returnButtonBlock := slack.NewButtonBlockElement(
+				utils.ReturnThisBook,
+				strconv.Itoa(book.ID),
+				slack.NewTextBlockObject("plain_text", "반납하기", false, false),
 			)
 
-			sections = append(sections, bookInfoSection)
+			extendButtonBlock := slack.NewButtonBlockElement(
+				utils.ExtendThisBook,
+				strconv.Itoa(book.ID),
+				slack.NewTextBlockObject("plain_text", "연장하기", false, false),
+			)
+
+			actionBlock := slack.NewActionBlock("status_action_block", returnButtonBlock, extendButtonBlock)
+
+			sections = append(sections, bookInfoSection, actionBlock)
 		}
 
 		return slack.NewBlockMessage(sections...)
@@ -222,18 +226,23 @@ func RenderStatusResult(books []models.Book, borrower string) slack.Message {
 
 			bookInfoText := fmt.Sprintf(">*%s*\n>%s 지음, %s\n>현재 상태: %s", book.Title, book.Author, book.Publisher, statusText)
 			bookInfoBlock := slack.NewTextBlockObject("mrkdwn", bookInfoText, false, false)
-			bookInfoSection := slack.NewSectionBlock(
-				bookInfoBlock,
-				nil,
-				slack.NewAccessory(
-					slack.NewButtonBlockElement(
-						utils.ExtendThisBook,
-						strconv.Itoa(book.ID),
-						slack.NewTextBlockObject("plain_text", "반납하기", false, false),
-					),
-				),
+			bookInfoSection := slack.NewSectionBlock(bookInfoBlock, nil, nil)
+
+			returnButtonBlock := slack.NewButtonBlockElement(
+				utils.ReturnThisBook,
+				strconv.Itoa(book.ID),
+				slack.NewTextBlockObject("plain_text", "반납하기", false, false),
 			)
-			sections = append(sections, bookInfoSection)
+
+			extendButtonBlock := slack.NewButtonBlockElement(
+				utils.ExtendThisBook,
+				strconv.Itoa(book.ID),
+				slack.NewTextBlockObject("plain_text", "연장하기", false, false),
+			)
+
+			actionBlock := slack.NewActionBlock("status_action_block", returnButtonBlock, extendButtonBlock)
+
+			sections = append(sections, bookInfoSection, actionBlock)
 		}
 
 		return slack.NewBlockMessage(sections...)
